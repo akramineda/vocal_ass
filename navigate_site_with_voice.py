@@ -1,6 +1,18 @@
 import speech_recognition as sr
 import webbrowser
 
+import json
+
+def read_site_map(json_file):
+    site_map = {}
+    try:
+        with open(json_file, 'r') as f:
+            site_map = json.load(f)
+    except FileNotFoundError:
+        print(f"Error: File '{json_file}' not found.")
+    
+    return site_map
+
 # Function to recognize speech input
 def get_voice_command():
     r = sr.Recognizer()
@@ -29,7 +41,22 @@ def open_requested_page(site_map, voice_command):
         print("Requested page not found.")
 
 
-# Main program
+if __name__ == "__main__":
+    # Path to your JSON file containing the site map
+    json_file = 'site_map.json'
+    
+    # Read site map from JSON file
+    site_map = read_site_map(json_file)
+
+    # Get voice command from the user
+    voice_command = get_voice_command()
+
+    # Open the requested page
+    open_requested_page(site_map, voice_command)
+
+
+# EXample
+'''
 site_map = {
     "home": "https://www.example.com",
     "about": "https://www.example.com/about",
@@ -37,5 +64,4 @@ site_map = {
     "contact": "https://www.example.com/contact"
 }
 
-requested_item = get_voice_command()
-open_requested_page(site_map, requested_item)
+'''    
